@@ -11,6 +11,6 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run()
     {
-        Article::create(['name' => 'Telephone', 'price' => 100, 'content' => 'Good phone', 'imgUrl' => 'https://picsum.photos/200']);
+        Article::create(['name' => 'Telephone', 'price' => 100, 'content' => 'Good phone', 'imgUrl' => 'https://picsum.photos/200', 'shop_id' => 2]);
     }
 }

@@ -23,7 +23,7 @@ class Shop extends Model
         return Shop::where('name','LIKE', "%{$searchTerm}%")
                         ->with('manager')
                         ->orderBy('name')
-                        // ->paginate(5);
-                        ->get();
+                        ->paginate(10);
+                        // ->get();
     }
 }

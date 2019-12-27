@@ -20,3 +20,4 @@ Route::post('/register', 'Auth\RegisterController@create');
 Route::post('/login', 'Auth\LoginController@authenticate');
 Route::middleware('jwt')->resource('/managers', 'ManagerController');
 Route::middleware('jwt')->resource('/shops', 'ShopController');
+Route::middleware('jwt')->resource('/articles', 'ArticleController');

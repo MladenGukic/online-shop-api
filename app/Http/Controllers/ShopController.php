@@ -20,7 +20,7 @@ class ShopController extends Controller
         if($searchTerm) {
             return Shop::search($searchTerm);
         } else {
-            return Shop::with('manager', 'articles')->get();
+            return Shop::with('manager', 'articles')->paginate(10);
         }
     }
     
