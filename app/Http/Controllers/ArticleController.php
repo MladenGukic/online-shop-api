@@ -3,25 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Manager;
-use App\Http\Requests\ManagerRequest;
+use App\Article;
 
-
-class ManagerController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $searchTerm = $request->query('first_name');
-        if($searchTerm) {
-            return Manager::search($searchTerm);
-        } else {
-            return Manager::with('shop')->get();
-        }
+        return Article::all();
     }
 
     /**
@@ -40,11 +33,9 @@ class ManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ManagerRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
-        
-        return Manager::create($data);
+        //
     }
 
     /**
@@ -55,7 +46,7 @@ class ManagerController extends Controller
      */
     public function show($id)
     {
-        return Manager::with('shop')->findOrFail($id);
+        //
     }
 
     /**

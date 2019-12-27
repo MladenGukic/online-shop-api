@@ -3,6 +3,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Manager;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
@@ -12,6 +13,11 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function manager() {
+        return $this->belongsTo(Manager::class);
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

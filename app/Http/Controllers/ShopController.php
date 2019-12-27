@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Shop;
 use Illuminate\Http\Request;
-use App\Manager;
-use App\Http\Requests\ManagerRequest;
+use App\Http\Requests\ShopRequest;
 
 
-class ManagerController extends Controller
+class ShopController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +16,14 @@ class ManagerController extends Controller
      */
     public function index(Request $request)
     {
-        $searchTerm = $request->query('first_name');
+        $searchTerm = $request->query('name');
         if($searchTerm) {
-            return Manager::search($searchTerm);
+            return Shop::search($searchTerm);
         } else {
-            return Manager::with('shop')->get();
+            return Shop::with('manager', 'articles')->get();
         }
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -40,11 +41,10 @@ class ManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ManagerRequest $request)
+    public function store(ShopRequest $request)
     {
         $data = $request->all();
-        
-        return Manager::create($data);
+        return Shop::create($data);
     }
 
     /**
@@ -55,7 +55,7 @@ class ManagerController extends Controller
      */
     public function show($id)
     {
-        return Manager::with('shop')->findOrFail($id);
+        return Shop::with('manager', 'articles')->findOrFail($id);
     }
 
     /**
@@ -78,7 +78,10 @@ class ManagerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = Shop::findOrFail($id);
+        $data->manager_id = $request->manager_id;
+        $data->save();
+        return $data;
     }
 
     /**

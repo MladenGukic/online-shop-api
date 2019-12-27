@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use App\User;
 
 
 class LoginController extends Controller
@@ -41,6 +42,7 @@ class LoginController extends Controller
 
     public function authenticate(Request $request)
     {
+        \Log::info($request);
         // grab credentials from the request
         $credentials = $request->only([ 'email', 'password' ]);
         try {
@@ -53,6 +55,9 @@ class LoginController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         // all good so return the token
-        return response()->json(['token' => $token]);
+        $user = \Auth::user();
+        $userr = User::with('manager')->find($user->id);
+        \Log::info($userr);
+        return response()->json(['token' => $token, 'user' => $userr]);
     }
 }
