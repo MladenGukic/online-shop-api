@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use App\Manager;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\RegisterRequest;
@@ -67,8 +68,12 @@ class RegisterController extends Controller
      */
     public function create(RegisterRequest $request) 
     {
+        
         $manager = Manager::create($request->except('password', 'password_confirm'));
-        User::create(array_merge($request->except('imageUrl', 'password', 'password_confirm'), ['manager_id' => $manager->id, 'password' => bcrypt($request->password)]));
-        return response()->json(['message' => 'Register successfull'], 200);
+       $user =  User::create(array_merge($request->except('imageUrl', 'password', 'password_confirm'), ['manager_id' => $manager->id, 'password' => bcrypt($request->password)]));
+        $credentials = $request->only([ 'email', 'password' ]);
+        \Log::info($credentials);
+        $token = \JWTAuth::attempt($credentials);
+        return response()->json(['message' => 'Register successfull', 'user' => $user, 'token' => $token ], 200);
     }
 }

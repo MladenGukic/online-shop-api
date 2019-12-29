@@ -2,28 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Shop;
 use Illuminate\Http\Request;
-use App\Http\Requests\ShopRequest;
+use App\Comment;
+use App\Http\Requests\CommentRequest;
 
-
-class ShopController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $searchTerm = $request->query('name');
-        if($searchTerm) {
-            return Shop::search($searchTerm);
-        } else {
-            return Shop::with('manager', 'articles', 'comments')->orderBy('id', 'DESC')->paginate(10);
-        }
+        return Comment::with('user')->get();
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -41,10 +34,12 @@ class ShopController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ShopRequest $request)
+    public function store(CommentRequest $request)
     {
+        \Log::info($request);
         $data = $request->all();
-        return Shop::create($data);
+        
+        return Comment::create($data);
     }
 
     /**
@@ -55,7 +50,7 @@ class ShopController extends Controller
      */
     public function show($id)
     {
-        return Shop::with('manager', 'articles', 'comments')->findOrFail($id);
+        //
     }
 
     /**
@@ -78,10 +73,7 @@ class ShopController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = Shop::findOrFail($id);
-        $data->manager_id = $request->manager_id;
-        $data->save();
-        return $data;
+        //
     }
 
     /**
@@ -92,7 +84,8 @@ class ShopController extends Controller
      */
     public function destroy($id)
     {
-        $shop = Shop::find($id);
-        $shop->delete();
+        
+        $comment = Comment::find($id);
+        $comment->delete();
     }
 }

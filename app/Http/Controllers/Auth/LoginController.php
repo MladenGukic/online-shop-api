@@ -56,8 +56,7 @@ class LoginController extends Controller
         }
         // all good so return the token
         $user = \Auth::user();
-        $userr = User::with('manager')->find($user->id);
-        \Log::info($userr);
-        return response()->json(['token' => $token, 'user' => $userr]);
+        $loggedUser = User::with('manager')->find($user->id);
+        return response()->json(['token' => $token, 'user' => $loggedUser]);
     }
 }

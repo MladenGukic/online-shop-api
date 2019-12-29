@@ -4,6 +4,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Manager;
+use App\Comment;
 class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
@@ -16,6 +17,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function manager() {
         return $this->belongsTo(Manager::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
     }
 
     /**

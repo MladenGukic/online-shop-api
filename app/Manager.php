@@ -21,7 +21,6 @@ class Manager extends Model
     {
         return Manager::where('first_name','LIKE', "%{$searchTerm}%")
                         ->orderBy('first_name')
-                        // ->paginate(5);
                         ->get();
     }
 }
